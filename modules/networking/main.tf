@@ -1,17 +1,7 @@
-resource "aws_vpc" "vpc_1" {
-    cidr_block =var.vpc_cidr
-    enable_dns_support   = true
-    enable_dns_hostnames = true
-
-  tags = {
-    Name = "vpc-1"
-  }
-}
-
 ///////////////////////PUBLICO//////////////////////////////
 
 resource "aws_subnet" "public_subnet_1" {
-  vpc_id                  = aws_vpc.vpc_1.id
+  vpc_id                  = var.vpc_id
   cidr_block              = var.public_subnet_1
   availability_zone       = var.vpc_aws_az_1
   map_public_ip_on_launch = true
@@ -22,7 +12,7 @@ resource "aws_subnet" "public_subnet_1" {
 }
 
 resource "aws_subnet" "public_subnet_2" {
-  vpc_id                  = aws_vpc.vpc_1.id
+  vpc_id                  = var.vpc_id
   cidr_block              = var.public_subnet_2
   availability_zone       = var.vpc_aws_az_2
   map_public_ip_on_launch = true
@@ -33,14 +23,14 @@ resource "aws_subnet" "public_subnet_2" {
 }
 
 resource "aws_internet_gateway" "gw" {
-  vpc_id = aws_vpc.vpc_1.id
+  vpc_id = var.vpc_id
   tags = {
     Name = "terraform-gw"
   }
 }
 
 resource "aws_route_table" "route_table_pub" {
-  vpc_id = aws_vpc.vpc_1.id
+  vpc_id = var.vpc_id
   route {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.gw.id
@@ -65,7 +55,7 @@ resource "aws_route_table_association" "public_subnet_2_association" {
 
 
 resource "aws_subnet" "private_subnet_1" {
-  vpc_id                  = aws_vpc.vpc_1.id
+  vpc_id                  = var.vpc_id
   cidr_block              = var.private_subnet_1
   availability_zone       = var.vpc_aws_az_1
   map_public_ip_on_launch = false
@@ -75,7 +65,7 @@ resource "aws_subnet" "private_subnet_1" {
 }
 
 resource "aws_subnet" "private_subnet_2" {
-  vpc_id                  = aws_vpc.vpc_1.id
+  vpc_id                  = var.vpc_id
   cidr_block              = var.private_subnet_2
   availability_zone       = var.vpc_aws_az_2
   map_public_ip_on_launch = false
@@ -85,6 +75,8 @@ resource "aws_subnet" "private_subnet_2" {
 }
 
 resource "aws_eip" "nat_eip" {
+    domain = "vpc"
+
     tags = {
     Name = "nat_eip_OBLI"
   }
@@ -101,7 +93,7 @@ resource "aws_nat_gateway" "nat_gw" {
 }
 
 resource "aws_route_table" "route_table_priv" {
-  vpc_id = aws_vpc.vpc_1.id
+  vpc_id = var.vpc_id
 
   route {
     cidr_block     = "0.0.0.0/0"
