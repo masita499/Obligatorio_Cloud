@@ -25,3 +25,4 @@ variable "vpc_aws_az_1" {
 variable "vpc_aws_az_2" {
   type = string
 }
+
