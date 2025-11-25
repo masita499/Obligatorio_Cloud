@@ -2,6 +2,6 @@ variable "vpc_cidr" {
     type = string
 }
 
-variable "name" { 
+variable "vpc_name" { 
    type = string 
 }

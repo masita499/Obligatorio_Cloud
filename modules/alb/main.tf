@@ -2,8 +2,8 @@ resource "aws_lb" "application_lb" {
   name               = "application-lb-OBLI"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.laod_balancer_sg.id]
-  subnets            = [aws_subnet.public_subnet_1.id, aws_subnet.public_subnet_2.id]
+  security_groups    = [var.lb_sg_id]
+  subnets            = var.public_subnets
 
   tags = {
     Name = "application_lb_OBLI"
@@ -14,11 +14,11 @@ resource "aws_lb_target_group" "application_tg" {
   name     = "application-tg"
   port     = 80
   protocol = "HTTP"
-  vpc_id   = aws_vpc.vpc_1.id
+  vpc_id   = var.vpc_id
 
   health_check {
     enabled             = true
-    path                = "/index.html"
+    path                = "/"
     healthy_threshold   = 3
     unhealthy_threshold = 2
     timeout             = 5
