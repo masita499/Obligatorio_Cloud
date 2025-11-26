@@ -17,9 +17,10 @@ systemctl start docker
 
 mkdir -p /opt/app
 cd /opt/app
-git clone https://github.com/ORT-FI-7417-SolucionesCloud/e-commerce-obligatorio-2025.git app
+git clone https://github.com/masita499/Pagina_Docker_Obligatorio.git app
 cd app
 
+mysql -h "${var.db_endpoint}" -u "${var.db_username}" -p"${var.db_password}" ${var.db_name} < db-settings.sql
 
 cat > Dockerfile << 'DOCKEREOF'
 FROM php:8.2-apache
@@ -43,8 +44,6 @@ docker run -d --name ecommerce-container \
 EOF
 )
 
-##find . -type f -name "*.php" -exec sed -i "s|db-obligatorio.cfanplfpi7x9.us-east-1.rds.amazonaws.com|${var.db_endpoint}|g" {} \;
-##sed -i "s|db-obligatorio.cfanplfpi7x9.us-east-1.rds.amazonaws.com|${var.db_endpoint}|g" -R .
 ##docker run -d --name ecommerce-container -p 80:80 ecommerce-php
 
   tag_specifications {
