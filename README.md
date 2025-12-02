@@ -1,7 +1,7 @@
 ***
 # Le pedi al gepeto que me tire unos piques sobre como armar un readme pillo
-1- Comparar las versiones en los commits y fijarse el proceso de aprendisaje en el chatgpt
-2- adjunto link: 
+1- Comparar las versiones en los commits y fijarse el proceso de aprendisaje en el chatgpt, adjunto link:
+ 
 https://chatgpt.com/share/692e6983-8bc0-8008-bef7-8d15b0193323
 ***
 
