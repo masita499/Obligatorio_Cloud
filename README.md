@@ -1,8 +1,8 @@
 Obligatorio Cloud - Infraestructura en AWS usando terraform
 
 Introduccion
-Este proyecto implementa la creacion de la infraestrucutra necesaria para el despliege de un ecommerce php sobre aws academy utilizando terraform.
-Se implementaron redes,balanceo de carga, escalado automatico, base de datos administrada y seguridad basada en modulos reutilizables.
+Este proyecto implementa la creacion de la infraestructura necesaria para el despliegue de un ecommerce php sobre aws academy utilizando terraform.
+Se implementaron redes, balanceo de carga, escalado automatico, base de datos administrada y seguridad basada en modulos reutilizables.
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -37,14 +37,14 @@ Obligatorio_Cloud/
 └── TERRAFORM_DOCS.md   # Documentación generada automáticamente con terraform docs
 
 Cada modulos contiene 4 archivos 
--main.tf → contiene la creacion y configuracion de los recuros.
+-main.tf → contiene la creacion y configuracion de los recursos.
 -outputs.tf → valores exportados para otros módulos
 -variables.tf → variables del módulo
 -Docs_"NombreModulo".md → contiene la documentacion del modulo echa con terraform docs
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Desarrolamos modulos especificos para esta pagina:
+Desarrollamos modulos especificos para esta pagina:
 
 - module "vpc" → Crea la VPC
 - module "networking" → IGW, NAT, route tables, subnets
@@ -55,7 +55,7 @@ Desarrolamos modulos especificos para esta pagina:
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-Despligue de la infraestructura
+Despliegue de la infraestructura
 
 para un despliegue exitoso de la infraestructura es necesario agregar las credenciales para la base de datos en el archivo varibles.tfvars en la raiz (no son subidas con el archivo a git por cuestiones de seguridad), a su vez se deben agregar las credenciales de AWS en su respectiva carpeta .aws en el archivo "credentials".
 
