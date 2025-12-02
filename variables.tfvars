@@ -17,7 +17,7 @@ public_subnet_1 = "10.0.10.0/24"
 public_subnet_2 = "10.0.20.0/24"
 
 //////////////////informacion_data_base//////////////////
-db_name     = "data_base_obli"
-db_username = "admin"
-db_password = "password12345679"
+db_name     = ""
+db_username = ""
+db_password = ""
 
