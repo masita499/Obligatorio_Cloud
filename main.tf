@@ -1,4 +1,8 @@
-# Creacion del Modulo VPC.
+# Aqui sucede unicamente la invocacion de los modulos creados anteriormente, se necesitan tambien sus dependecias.
+# Basicamente aca se resume toda la infraestructura del proyecto.
+# La verdadera infra son los modulos, ahi sucede todas las intrucciones.
+
+# Llamado del modulo vpc y sus dependencias.
 module "vpc" {
   source           = "./modules/vpc"
 
@@ -6,7 +10,7 @@ module "vpc" {
   vpc_name         = "vpc_Obligatorio"
 }
 
-# Creacion del Modulo Networking: Usa recursos de las Subredes, Zonas de Disponibilidad y VPC.
+# Llamado del modulo networking y sus dependencias.
 module "networking" {
   source           = "./modules/networking"
 
@@ -19,7 +23,7 @@ module "networking" {
   vpc_id           = module.vpc.vpc_id
 }
 
-# Creacion del modulo ALB: Usa recursos de subred, Security Group y VPC.
+# Llamado del modulo alb y sus dependencias.
 module "alb" {
   source           = "./modules/alb"
 
@@ -28,7 +32,7 @@ module "alb" {
   lb_sg_id         = module.security_groups.lb_sg_id
 }
 
-# Creacion del modulo ASG: Usa recursos de Ami, Security Group, Target Group, Subred.
+# Llamado del modulo asg y sus dependencias.
 module "asg" {
   source           = "./modules/asg"
 
@@ -36,19 +40,20 @@ module "asg" {
   app_sg_id        = module.security_groups.app_sg_id
   target_group_arn = module.alb.target_group_arn
   private_subnets  = module.networking.private_subnets
+  max_size = var.max_size
+  min_size = var.min_size
+  desired_capacity = var.desired_capacity
+  instance_type = var.instance_type
   
   db_endpoint      = module.db.db_endpoint
   db_name          = var.db_name
   db_username      = var.db_username
   db_password      = var.db_password
 
-# El ASG no está creando ni albergando la base de datos, sino que está recibiendo las credenciales 
-# y el punto de acceso de la base de datos como variables de entrada.
-# Esto se hace para que las instancias de EC2 lanzadas por el ASG sepan cómo y dónde conectarse a la base de datos.
 
 }
 
-# Creacion del Modulo Security Groups: Usa el recurso de VPC para asociarse a el.
+# Llamado del modulo security groups y sus dependencias.
 module "security_groups" {
   source           = "./modules/security_groups"
   vpc_id           = module.vpc.vpc_id
@@ -56,7 +61,7 @@ module "security_groups" {
 
 }
 
-# Creacion del Modulo de la Base de Datos: Usa recursos de subred y Security Group.
+# Llamado del modulo db y sus dependencias
 module "db" {
   source           = "./modules/db"
 
@@ -66,6 +71,3 @@ module "db" {
   db_username      = var.db_username
   db_password      = var.db_password
 }
-#UNA OBSERVACION DIGNA DE COMENTAR:
-# En los Modulos "db" "Asg" no se le agrega la linea para asocirlos a un VPC, porque "db" y "asg" estan asociados a una subred 
-# y esa subred ya esta previamente asociada a un VPC

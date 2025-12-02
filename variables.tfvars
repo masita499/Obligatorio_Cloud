@@ -12,6 +12,8 @@ perfil = "default"
 
 ami = "ami-0c2b8ca1dad447f8a"
 
+instance_type = "t2.micro"
+
 region = "us-east-1"
 
 vpc_cidr = "10.0.0.0/16"
@@ -24,7 +26,20 @@ public_subnet_1 = "10.0.10.0/24"
 
 public_subnet_2 = "10.0.20.0/24"
 
-# Informacion Base de datos: (4.2)DATOS SENSIBLES
+min_size = 2 
+
+max_size = 4
+ 
+desired_capacity = 2
+
+vpc_aws_az_1 = "us-east-1a"
+
+vpc_aws_az_2 = "us-east-1b"
+
+
+
+
+# Informacion Base de datos: (4.2) DATOS SENSIBLES.
 db_name     = ""
 db_username = ""
 db_password = ""

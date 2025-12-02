@@ -1,16 +1,16 @@
-##creacion del launch template 
+# Creacion del launch template 
 resource "aws_launch_template" "launch_template" {
   name_prefix   = "launch_template_OBLI_V2"
   image_id      = var.ami
   instance_type = var.instance_type
-  #key_name      = "terraform-key"
+  
 
   vpc_security_group_ids = [var.app_sg_id]
 
-##el user data aprovisiona las instancias que se instalaran mediante el asg con todo lo necesario para un despliege exitoso
+# El user data aprovisiona las instancias que se instalaran mediante el asg con todo lo necesario para un despliege exitoso
   user_data = base64encode(<<-EOF
 #!/bin/bash
-set -xe
+set -xe   
 
 yum update -y
 yum install -y docker git mariadb || dnf install -y docker git mariadb
@@ -69,27 +69,27 @@ EOF
 }
 
 ##creacion del auto scaling group 
-resource "aws_autoscaling_group" "auto_scaling_group" {
-  name                      = "auto_scaling_group_OBLI"
-  min_size                  = var.min_size
-  max_size                  = var.max_size
-  desired_capacity          = var.desired_capacity
-  health_check_type         = "EC2"
-  health_check_grace_period = 300
+resource "aws_autoscaling_group" "auto_scaling_group" {    # nombre del recurso en terraform
+  name                      = "auto_scaling_group_OBLI"    # nombre del recurso en aws
+  min_size                  = var.min_size                 # maximas instancias desplegadas
+  max_size                  = var.max_size                 # minimas instancias desplegadas
+  desired_capacity          = var.desired_capacity         # numero de instancia de partida
+  health_check_type         = "EC2"                        # que evalue ec2
+  health_check_grace_period = 300                          # que espere 300 segundos despues de haber lanzado las instancias
 
-  vpc_zone_identifier = var.private_subnets
+  vpc_zone_identifier = var.private_subnets                # lo asocia a una subnet
 
-  target_group_arns = [var.target_group_arn]
+  target_group_arns = [var.target_group_arn]               # lo asocia a un target group para trabajar en conjunto
 
   launch_template {
-    id      = aws_launch_template.launch_template.id
-    version = "$Latest"
+    id      = aws_launch_template.launch_template.id       # que siempre use un template definido anteriormente
+    version = "$Latest"                                    # la ultima version de ese launch template
   }
 
   tag {
     key                 = "Name"
-    value               = "app_asg_instance_OBLI"
-    propagate_at_launch = true
+    value               = "app_asg_instance_OBLI"         # el nombre de la ec2
+    propagate_at_launch = true                            # para que se muestre el nombre de las ec2 creadas por el launch template
   }
 }
 
