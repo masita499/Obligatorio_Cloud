@@ -1,4 +1,9 @@
 ***
+# Le pedi al gepeto que me tire unos piques sobre como armar un readme pillo
+1- Comparar las versiones en los commits y fijarse el proceso de aprendisaje en el chatgpt
+2- adjunto link: 
+https://chatgpt.com/share/692e6983-8bc0-8008-bef7-8d15b0193323
+***
 
 # 🌩️ Obligatorio Cloud – Infraestructura en AWS usando Terraform
 
@@ -8,21 +13,21 @@ Incluye redes, balanceo de carga, alta disponibilidad, base de datos administrad
 
 # 🏗️ Arquitectura Implementada
 
-VPC con subredes públicas y privadas
+1- VPC con subredes públicas y privadas
 
-Internet Gateway para salida a internet
+2- Internet Gateway para salida a internet
 
-NAT Gateway para que las instancias privadas puedan actualizarse
+3- NAT Gateway para que las instancias privadas puedan actualizarse
 
-Application Load Balancer (ALB) público
+4- Application Load Balancer (ALB) público
 
-Auto Scaling Group (ASG) conectado al Target Group del ALB
+5- Auto Scaling Group (ASG) conectado al Target Group del ALB
 
-Instancias EC2 (vía ASG) con Apache + PHP mediante Launch Template
+6- Instancias EC2 (vía ASG) con Apache + PHP mediante Launch Template
 
-Base de datos MySQL en Amazon RDS
+7- Base de datos MySQL en Amazon RDS
 
-Security Groups con tráfico segmentado entre componentes
+8- Security Groups con tráfico segmentado entre componentes
 ***
 
 # 📁 Estructura del Proyecto
@@ -55,30 +60,30 @@ Obligatorio_Cloud/
 # Cada módulo contiene:
 
 ```
-main.tf → creación y configuración
+En main.tf : Creación y configuración
 
-outputs.tf → valores exportados
+En outputs.tf : valores exportados
 
-variables.tf → variables del módulo
+En variables.tf : variables del módulo
 
-Docs_<NombreModulo>.md → documentación generada con terraform-docs
+Docs_<NombreModulo>.md : Documentación generada con terraform-docs
 ```
 ***
 
 # 🧩 Módulos desarrollados
 
 ```
-module "vpc" → Crea la VPC
+El modulo "vpc" : Crea la VPC
 
-module "networking" → Crea IGW, NAT, route tables y subnets
+El modulo "networking" : Crea IGW, NAT, route tables y subnets
 
-module "alb" → Crea Application Load Balancer + Target Group + Listener
+El modulo "alb" : Crea Application Load Balancer + Target Group + Listener
 
-module "security_groups" Crea → SG del ALB, EC2 y RDS
+El modulo "security_groups" : Crea SG del ALB, EC2 y RDS
 
-module "asg" Crea  → Auto Scaling Group + Launch Template
+El modulo "asg" Crea : Auto Scaling Group + Launch Template
 
-module "db" Crea → Instancia RDS MySQL
+El modulo "db" Crea : Instancia RDS MySQL
 ```
 ***
 
@@ -87,41 +92,41 @@ module "db" Crea → Instancia RDS MySQL
 Para desplegar correctamente la infraestructura:
 
 ```
-📌 Debés agregar las credenciales de la base de datos en terraform.tfvars (NO subidas al repositorio)
-📌 Configurar las credenciales de AWS en ~/.aws/credentials
+1- Debés agregar las credenciales de la base de datos en terraform.tfvars (NO subidas al repositorio)
+2- Configurar las credenciales de AWS en ~/.aws/credentials
 ```
 Requisitos previos
 
 ```
-📌 Terraform ≥ 1.6
+1- Terraform ≥ 1.6
 
-📌 Cuenta activa de AWS Academy
+2- Cuenta activa de AWS Academy
 
-📌 Credenciales configuradas correctamente
+3- Credenciales configuradas correctamente
 
-📌Inicializar Terraform
+4- nicializar Terraform
     terraform init
 
-📌Aplicar la infraestructura
+5- Aplicar la infraestructura
     terraform apply
 
-Terraform generará automáticamente todos los recursos.
+LISTO: Terraform generará automáticamente todos los recursos.
 ```
 ***
 
 # 🛡️ Buenas prácticas implementadas
 
-Infraestructura 100% Modificable
+1- Infraestructura Modificable para un futuro cambio
 
-Separación total entre configuración y credenciales
+2- Separación total entre configuración y credenciales
 
-Security Groups específicos por componente
+3- Security Groups específicos por componente
 
-EC2 y RDS en subredes privadas
+4- EC2 y RDS en subredes privadas
 
-Alta disponibilidad mediante ALB + ASG
+5- Alta disponibilidad mediante ALB + ASG
 
-Documentación generada con terraform-docs
+6- Documentación generada con terraform-docs
 
 ***
 
@@ -132,31 +137,32 @@ Documentación generada con terraform-docs
 Recursos creados:
 
 ```
-Log Group: /ecs/ecommerce-app
+1- Log Group: /ecs/ecommerce-app
 
-Política de escalado: scale-out-policy
+2- Política de escalado: scale-out-policy
 
-Alarma de CPU: asg-high-cpu
+3- Alarma de CPU: asg-high-cpu
 ```
 ***
 
 # 🧠 Funcionamiento de la alarma
 
 ```
-Métrica: CPUUtilization (AWS/EC2)
+1- Métrica: CPUUtilization (AWS/EC2)
 
-Condición: si la CPU supera el umbral → estado ALARM
+2- Condición: si la CPU supera el umbral → estado ALARM
 
-Acción: ejecuta scale-out-policy, agregando una instancia EC2
+3- Acción: ejecuta scale-out-policy, agregando una instancia EC2
 ```
 ***
 
 ## Esto permite:
 ```
-Escalado automático ante picos de tráfico
+1- Escalado automático ante picos de tráfico
 
-Alta disponibilidad constante
+2- Alta disponibilidad constante
 
-Monitoreo completo desde la consola de CloudWatch
+3- Monitoreo completo desde la consola de CloudWatch
 ```
 ***
+
