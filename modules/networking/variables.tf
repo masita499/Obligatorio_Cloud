@@ -1,3 +1,4 @@
+# se usan valores sacados del tfvars y del modulo "vpc"
 variable "vpc_id" {
   type = string
 }
