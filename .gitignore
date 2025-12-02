@@ -1,8 +1,34 @@
+# ---------------------------------------------------------------------------------------------------------------
+# Github tiene una funcionalidad interna, que busca archivos con extencion ".gitignore"
+# Justamente lo que hace es analizar el contenido de ese archivo y al momento de hacer el "push", ignora todos
+# los archivos que las extenciones contenidas alli.
+# Esto sa hace por seguridad, la compatibilidad y la integridad del estado de la infraestructura.
+# ---------------------------------------------------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------------------------------------------
 .terraform/
 
+# Un directorio que Terraform crea la primera vez que ejecutas terraform init.
+# Contiene: Los archivos binarios y 
+# código de los proveedores (AWS, Azure, Google) y los módulos remotos que tu configuración requiere.
+# ---------------------------------------------------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------------------------------------------------
 terraform.tfstate
-
 terraform.tfstate.backup
+# El archivo de estado de Terraform. Es el registro de lo que Terraform ha creado realmente en la nube.
+# ---------------------------------------------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------------------------------------------
 .terraform.lock.hcl
+# Subir este archivo implica que hoy o mañana se descarguen la infraestructura desplegada aqui, y que esa infra este
+# Determinada a usar la version exacta de los recursos usados aqui, entre tantos: Provider AWS 6.23.1
+# Este codigo ANDA HOY, pero no se sabe si luego AWS decide actualizar algunos recursos y termine afectando el 
+# automatismo usado aqui.
 
+# Asi que: Para todo aquel que quiera usar esta infra y no les ande, probablemente hay incompatibilidades con las versiones
+# usadas aca y las versiones de recursos que usan ellos.
+
+# ---------------------------------------------------------------------------------------------------------------
