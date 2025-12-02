@@ -1,122 +1,167 @@
-Obligatorio Cloud - Infraestructura en AWS usando terraform
+***
+# Le pedi al gepeto que me aconseje sobre como armar un readme pillo
+1- Comparar las versiones en los commits y fijarse el proceso de aprendisaje en el chatgpt, adjunto link:
+ 
+https://chatgpt.com/share/692e6983-8bc0-8008-bef7-8d15b0193323
+***
 
-Introduccion
-Este proyecto implementa la creacion de la infraestructura necesaria para el despliegue de un ecommerce php sobre aws academy utilizando terraform.
-Se implementaron redes, balanceo de carga, escalado automatico, base de datos administrada y seguridad basada en modulos reutilizables.
+# 🌩️ Obligatorio Cloud – Infraestructura en AWS usando Terraform
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Este proyecto implementa la creación de toda la infraestructura necesaria para desplegar un ecommerce en PHP sobre AWS Academy, utilizando Terraform y una arquitectura modular.
+Incluye redes, balanceo de carga, alta disponibilidad, base de datos administrada y seguridad por capas.
+***
 
-La arquitectura incluye:
+# 🏗️ Arquitectura Implementada
 
-- Una VPC con subredes públicas y privadas.
-- Un Internet Gateway para salida a Internet.
-- NAT Gateway para que las instancias privadas(instancias dentro del vpc) puedan actualizarse.
-- Un Application Load Balancer (ALB) público.
-- Auto Scaling Group (ASG) conectado al Target Group del ALB.
-- Instancias EC2(desplegadas mediante el ASG) con Apache + PHP, configuradas con un Launch Template.
-- Una base de datos MySQL en Amazon RDS.
-- Security Groups para controlar el tráfico entre componentes.
+1- VPC con subredes públicas y privadas
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+2- Internet Gateway para salida a internet
 
-Estructura del proyecto
+3- NAT Gateway para que las instancias privadas puedan actualizarse
+
+4- Application Load Balancer (ALB) público
+
+5- Auto Scaling Group (ASG) conectado al Target Group del ALB
+
+6- Instancias EC2 (vía ASG) con Apache + PHP mediante Launch Template
+
+7- Base de datos MySQL en Amazon RDS
+
+8- Security Groups con tráfico segmentado entre componentes
+***
+
+# 📁 Estructura del Proyecto
+
+```
 
 Obligatorio_Cloud/
 │
 ├── main.tf
 ├── variables.tf
 ├── terraform.tfvars
+│
 ├── modules/
 │   ├── vpc/
+│   │   ├── main.tf
+│   │   ├── outputs.tf
+│   │   ├── variables.tf
+│   │   └── Docs_vpc.md
 │   ├── networking/
 │   ├── alb/
 │   ├── security_groups/
 │   ├── asg/
-│   ├── db/
+│   └── db/
 │
-└── TERRAFORM_DOCS.md   # Documentación generada automáticamente con terraform docs
+└── TERRAFORM_DOCS.md
 
-Cada modulos contiene 4 archivos 
--main.tf → contiene la creacion y configuracion de los recursos.
--outputs.tf → valores exportados para otros módulos
--variables.tf → variables del módulo
--Docs_"NombreModulo".md → contiene la documentacion del modulo echa con terraform docs
+```
+***
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+# Cada módulo contiene:
 
-Desarrollamos modulos especificos para esta pagina:
+```
+En main.tf : Creación y configuración
 
-- module "vpc" → Crea la VPC
-- module "networking" → IGW, NAT, route tables, subnets
-- module "alb" → Application Load Balancer, Target Group, Listener
-- module "security_groups" → SGs para ALB, EC2 y RDS
-- module "asg" → Auto Scaling Group + Launch Template
-- module "db" → instancia RDS MySQL.
+En outputs.tf : valores exportados
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+En variables.tf : variables del módulo
 
-Despliegue de la infraestructura
+Docs_<NombreModulo>.md : Documentación generada con terraform-docs
+```
+***
 
-para un despliegue exitoso de la infraestructura es necesario agregar las credenciales para la base de datos en el archivo varibles.tfvars en la raiz (no son subidas con el archivo a git por cuestiones de seguridad), a su vez se deben agregar las credenciales de AWS en su respectiva carpeta .aws en el archivo "credentials".
+# 🧩 Módulos desarrollados
 
-Pasos para desplegar la Infraestructura
+```
+El modulo "vpc" : Crea la VPC
 
--Requisitos previos:
-Terraform ≥ 1.6
-Cuenta AWS Academy activa
-Credenciales configuradas (credentials en .aws y credenciales de RDS)
+El modulo "networking" : Crea IGW, NAT, route tables y subnets
 
--Inicializar Terraform
-Terraform init
+El modulo "alb" : Crea Application Load Balancer + Target Group + Listener
 
--Desplegar la infraestructura
-terraform apply
+El modulo "security_groups" : Crea SG del ALB, EC2 y RDS
 
--Terraform creará automáticamente toda la infraestructura.
+El modulo "asg" Crea : Auto Scaling Group + Launch Template
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+El modulo "db" Crea : Instancia RDS MySQL
+```
+***
 
-Buenas Prácticas Implementadas
+# 🚀 Despliegue de la infraestructura
 
--Infraestructura modular.
+Para desplegar correctamente la infraestructura:
 
--Separación de configuración y credenciales (archivos .tfvars y ~/.aws/credentials).
+```
+1- Debés agregar las credenciales de la base de datos en terraform.tfvars (NO subidas al repositorio)
+2- Configurar las credenciales de AWS en ~/.aws/credentials
+```
+Requisitos previos
 
--Seguridad mediante SG
+```
+1- Terraform ≥ 1.6
 
--Componentes críticos (EC2 y RDS) ubicados en subredes privadas.
+2- Cuenta activa de AWS Academy
 
--Uso de Launch Template en vez de Launch Configuration (deprecated)
+3- Credenciales configuradas correctamente
 
--ALB + ASG para alta disponibilidad
+4- nicializar Terraform
+    terraform init
 
--Documentación de módulos generada automáticamente con terraform-docs.
+5- Aplicar la infraestructura
+    terraform apply
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+LISTO: Terraform generará automáticamente todos los recursos.
+```
+***
 
-Monitoreo con Cloudwatch
+# 🛡️ Buenas prácticas implementadas
 
-Para mejorar la disponibilidad y la capacidad de respuesta de la aplicación, se integró Amazon CloudWatch con el Auto Scaling Group:
+1- Infraestructura Modificable para un futuro cambio
 
--Se creó un CloudWatch Log Group (/ecs/ecommerce-app) para centralizar logs de la aplicación.
+2- Separación total entre configuración y credenciales
 
--Se definió una política de escalado (scale-out-policy) asociada al ASG.
+3- Security Groups específicos por componente
 
--Se configuró una alarma de CPU (asg-high-cpu) que monitorea el promedio de CPUUtilization de las instancias del Auto Scaling Group.
+4- EC2 y RDS en subredes privadas
 
-Comportamiento de la alarma
+5- Alta disponibilidad mediante ALB + ASG
 
--Métrica: CPUUtilization (namespace AWS/EC2).
+6- Documentación generada con terraform-docs
 
--Condición: si la CPU supera el umbral definido durante el período configurado,
-la alarma pasa a estado ALARM y ejecuta la política de escalado.
+***
 
--Acción: la política scale-out-policy incrementa la capacidad del ASG, agregando una nueva instancia EC2 para absorber la carga.
+# 📊 Monitoreo con CloudWatch
 
-Esto permite:
+## Para mejorar la disponibilidad del ecommerce se integró Amazon CloudWatch al Auto Scaling Group.
 
--Escalar automáticamente cuando aumenta la carga sobre la aplicación.
+Recursos creados:
 
--Mantener la disponibilidad ante picos de tráfico.
+```
+1- Log Group: /ecs/ecommerce-app
 
--Monitorear el estado del Auto Scaling Group desde la consola de CloudWatch (métricas y alarmas).
+2- Política de escalado: scale-out-policy
+
+3- Alarma de CPU: asg-high-cpu
+```
+***
+
+# 🧠 Funcionamiento de la alarma
+
+```
+1- Métrica: CPUUtilization (AWS/EC2)
+
+2- Condición: si la CPU supera el umbral → estado ALARM
+
+3- Acción: ejecuta scale-out-policy, agregando una instancia EC2
+```
+***
+
+## Esto permite:
+```
+1- Escalado automático ante picos de tráfico
+
+2- Alta disponibilidad constante
+
+3- Monitoreo completo desde la consola de CloudWatch
+```
+***
