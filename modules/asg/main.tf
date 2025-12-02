@@ -1,3 +1,4 @@
+##creacion del launch template 
 resource "aws_launch_template" "launch_template" {
   name_prefix   = "launch_template_OBLI_V2"
   image_id      = var.ami
@@ -6,28 +7,42 @@ resource "aws_launch_template" "launch_template" {
 
   vpc_security_group_ids = [var.app_sg_id]
 
+##el user data aprovisiona las instancias que se instalaran mediante el asg con todo lo necesario para un despliege exitoso
   user_data = base64encode(<<-EOF
 #!/bin/bash
+set -xe
 
 yum update -y
+yum install -y docker git mariadb || dnf install -y docker git mariadb
 
-yum install  docker git -y
 systemctl enable docker
 systemctl start docker
 
 mkdir -p /opt/app
 cd /opt/app
-git clone https://github.com/ORT-FI-7417-SolucionesCloud/e-commerce-obligatorio-2025.git app
+git clone https://github.com/masita499/Pagina_Docker_Obligatorio.git app
 cd app
+
+mysql -h "${var.db_endpoint}" -u "${var.db_username}" -p"${var.db_password}" \
+  -e "CREATE DATABASE IF NOT EXISTS ${var.db_name} CHARACTER SET latin1;"
+
+mysql -h "${var.db_endpoint}" -u "${var.db_username}" -p"${var.db_password}" \
+  "${var.db_name}" < db-settings.sql || echo "BD posiblemente ya inicializada, continuando..."
 
 
 cat > Dockerfile << 'DOCKEREOF'
+
 FROM php:8.2-apache
-RUN a2enmod rewrite 
-RUN sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
-RUN docker-php-ext-install pdo pdo_mysql
-COPY . /var/www/html
+RUN apt-get update && \
+    apt-get install -y default-mysql-client && \
+    docker-php-ext-install pdo_mysql
+
+RUN a2enmod rewrite && \
+    sed -i 's/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf && \
+    printf "\n<Directory /var/www/html>\n    AllowOverride All\n</Directory>\n" > /etc/apache2/conf-enabled/override.conf
+
 WORKDIR /var/www/html
+COPY . /var/www/html
 DOCKEREOF
 
 docker build -t ecommerce-php .
@@ -43,9 +58,6 @@ docker run -d --name ecommerce-container \
 EOF
 )
 
-##find . -type f -name "*.php" -exec sed -i "s|db-obligatorio.cfanplfpi7x9.us-east-1.rds.amazonaws.com|${var.db_endpoint}|g" {} \;
-##sed -i "s|db-obligatorio.cfanplfpi7x9.us-east-1.rds.amazonaws.com|${var.db_endpoint}|g" -R .
-##docker run -d --name ecommerce-container -p 80:80 ecommerce-php
 
   tag_specifications {
     resource_type = "instance"
@@ -56,6 +68,7 @@ EOF
   }
 }
 
+##creacion del auto scaling group 
 resource "aws_autoscaling_group" "auto_scaling_group" {
   name                      = "auto_scaling_group_OBLI"
   min_size                  = var.min_size
@@ -79,3 +92,4 @@ resource "aws_autoscaling_group" "auto_scaling_group" {
     propagate_at_launch = true
   }
 }
+
