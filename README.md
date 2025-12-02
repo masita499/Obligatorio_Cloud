@@ -7,6 +7,7 @@ Se implementaron redes,balanceo de carga, escalado automatico, base de datos adm
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 La arquitectura incluye:
+
 - Una VPC con subredes públicas y privadas.
 - Un Internet Gateway para salida a Internet.
 - NAT Gateway para que las instancias privadas(instancias dentro del vpc) puedan actualizarse.
@@ -50,6 +51,7 @@ Desarrolamos modulos especificos para esta pagina:
 - module "alb" → Application Load Balancer, Target Group, Listener
 - module "security_groups" → SGs para ALB, EC2 y RDS
 - module "asg" → Auto Scaling Group + Launch Template
+- module "db" → instancia RDS MySQL.
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -76,16 +78,45 @@ terraform apply
 
 Buenas Prácticas Implementadas
 
--Infraestructura modular
+-Infraestructura modular.
 
--Separación de configuración / credenciales
+-Separación de configuración y credenciales (archivos .tfvars y ~/.aws/credentials).
 
 -Seguridad mediante SG
 
--Componentes en subredes privadas
+-Componentes críticos (EC2 y RDS) ubicados en subredes privadas.
 
 -Uso de Launch Template en vez de Launch Configuration (deprecated)
 
 -ALB + ASG para alta disponibilidad
 
--Documentación con terraform-docs
+-Documentación de módulos generada automáticamente con terraform-docs.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Monitoreo con Cloudwatch
+
+Para mejorar la disponibilidad y la capacidad de respuesta de la aplicación, se integró Amazon CloudWatch con el Auto Scaling Group:
+
+-Se creó un CloudWatch Log Group (/ecs/ecommerce-app) para centralizar logs de la aplicación.
+
+-Se definió una política de escalado (scale-out-policy) asociada al ASG.
+
+-Se configuró una alarma de CPU (asg-high-cpu) que monitorea el promedio de CPUUtilization de las instancias del Auto Scaling Group.
+
+Comportamiento de la alarma
+
+-Métrica: CPUUtilization (namespace AWS/EC2).
+
+-Condición: si la CPU supera el umbral definido durante el período configurado,
+la alarma pasa a estado ALARM y ejecuta la política de escalado.
+
+-Acción: la política scale-out-policy incrementa la capacidad del ASG, agregando una nueva instancia EC2 para absorber la carga.
+
+Esto permite:
+
+-Escalar automáticamente cuando aumenta la carga sobre la aplicación.
+
+-Mantener la disponibilidad ante picos de tráfico.
+
+-Monitorear el estado del Auto Scaling Group desde la consola de CloudWatch (métricas y alarmas).
