@@ -1,3 +1,4 @@
+##creacion del launch template 
 resource "aws_launch_template" "launch_template" {
   name_prefix   = "launch_template_OBLI_V2"
   image_id      = var.ami
@@ -6,6 +7,7 @@ resource "aws_launch_template" "launch_template" {
 
   vpc_security_group_ids = [var.app_sg_id]
 
+##el user data aprovisiona las instancias que se instalaran mediante el asg con todo lo necesario para un despliege exitoso
   user_data = base64encode(<<-EOF
 #!/bin/bash
 set -xe
@@ -66,6 +68,7 @@ EOF
   }
 }
 
+##creacion del auto scaling group 
 resource "aws_autoscaling_group" "auto_scaling_group" {
   name                      = "auto_scaling_group_OBLI"
   min_size                  = var.min_size
