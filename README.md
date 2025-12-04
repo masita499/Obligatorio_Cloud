@@ -108,7 +108,7 @@ Requisitos previos
     terraform init
 
 5- Aplicar la infraestructura
-    terraform apply
+    terraform apply -var-file="variables.tfvars"
 
 LISTO: Terraform generará automáticamente todos los recursos.
 ```
