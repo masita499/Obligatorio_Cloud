@@ -165,3 +165,7 @@ Recursos creados:
 3- Monitoreo completo desde la consola de CloudWatch
 ```
 ***
+
+***
+<img src="img/diagrama.jpeg" width="400px">
+***
