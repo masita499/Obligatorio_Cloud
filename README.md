@@ -168,6 +168,6 @@ Recursos creados:
 
 ***
 
-<img src="img/DiagramaCloud.jpeg" width="400px">
+<img src="img/DiagramaCloud.jpeg" width="600px">
 
 ***
