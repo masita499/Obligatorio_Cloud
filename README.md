@@ -156,7 +156,7 @@ Recursos creados:
 ```
 ***
 
-## Esto permite:
+## ⚙️ Esto permite:
 ```
 1- Escalado automático ante picos de tráfico
 
@@ -164,4 +164,11 @@ Recursos creados:
 
 3- Monitoreo completo desde la consola de CloudWatch
 ```
+***
+
+## ☁️ Diagrama de la Infraestructura Desplegada
+
+
+<img src="img/DiagramaCloud.jpeg" width="800px">
+
 ***
