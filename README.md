@@ -166,7 +166,7 @@ Recursos creados:
 ```
 ***
 
-## ☁️ Diagrama de la Infraestructura Desplegada
+ ☁️ Diagrama de la Infraestructura Desplegada
 ```
 
 <img src="img/DiagramaCloud.jpeg" width="700px">
