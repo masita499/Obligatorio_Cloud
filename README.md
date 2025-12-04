@@ -156,7 +156,7 @@ Recursos creados:
 ```
 ***
 
-## Esto permite:
+## ⚙️ Esto permite:
 ```
 1- Escalado automático ante picos de tráfico
 
@@ -166,8 +166,9 @@ Recursos creados:
 ```
 ***
 
-***
+## ☁️ Diagrama de la Infraestructura Desplegada
+```
 
-<img src="img/DiagramaCloud.jpeg" width="600px">
+<img src="img/DiagramaCloud.jpeg" width="800px">
 
 ***
